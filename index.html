@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For you meena 💖</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body
+    <!-- The Splitting Doors -->
+    <div class="gate left-gate">
+        <div class="gate-bg"></div>
+    </div>
+    <div class="gate right-gate">
+        <div class="gate-bg right-bg-offset"></div>
+    </div>
+
+    <!-- The Entry Layer -->
+    <div id="entry-layer">
+        <div id="hearts-container"></div>
+        
+        <div id="animation-container">
+            <!-- Texts will be injected here via script.js -->
+        </div>
+
+        <div id="final-screen" class="hidden">
+            <div class="password-container">
+                <!-- Animated CSS Kitty -->
+                <div class="kitty-container">
+                    <div class="kitty">
+                        <div class="ears">
+                            <div class="ear left"></div>
+                            <div class="ear right"></div>
+                        </div>
+                        <div class="face">
+                            <div class="eyes">
+                                <div class="eye left"><div class="pupil"></div></div>
+                                <div class="eye right"><div class="pupil"></div></div>
+                            </div>
+                            <div class="cheek left"></div>
+                            <div class="cheek right"></div>
+                            <div class="nose"></div>
+                            <div class="mouth"></div>
+                            <div class="whiskers left">
+                                <div class="whisker"></div>
+                                <div class="whisker"></div>
+                            </div>
+                            <div class="whiskers right">
+                                <div class="whisker"></div>
+                                <div class="whisker"></div>
+                            </div>
+                        </div>
+                        <div class="paws">
+                            <div class="paw left"></div>
+                            <div class="paw right"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Box -->
+                <div class="password-box">
+                    <p class="subtitle">Enter the magic word to unlock our world...</p>
+                    <div class="input-group">
+                        <input type="password" id="password" placeholder="Password...">
+                        <button id="submit-btn" class="glow-button">Unlock</button>
+                    </div>
+                    <p id="error-msg" class="hidden">Oops! Try again little brain lol</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Environment & Text Elements -->
+    <div id="romantic-text-container" class="hidden"></div>
+    <div id="3d-universe" class="hidden"></div>
+
+    <!-- Three.js for 3D Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="heart3d.js"></script>
+    <script src="script.js"></script>
+    <script src="music.js"></script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story Timeline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0213;
+            background-image: radial-gradient(circle at center, #1a0823 0%, #0b0213 100%);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            width: 100vw;
+        }
+
+        /* Stars Background */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,182,193,0.8) 100%, transparent),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.5) 100%, transparent),
+                radial-gradient(2px 2px at 60% 20%, rgba(255,105,180,0.8) 100%, transparent),
+                radial-gradient(1.5px 1.5px at 80% 50%, rgba(255,182,193,0.6) 100%, transparent);
+            background-size: 150px 150px;
+            animation: twinkle 4s infinite alternate;
+        }
+        @keyframes twinkle { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* Timeline Container */
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 20px;
+            z-index: 10;
+        }
+        
+        /* The vertical line */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, transparent, #ff1493, #ff69b4, transparent);
+            top: 0; bottom: 0; left: 50%;
+            margin-left: -2px;
+            box-shadow: 0 0 15px #ff1493;
+        }
+
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            background: inherit;
+            width: 50%;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-in-out;
+            z-index: 2;
+        }
+
+        .timeline-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        /* The circles on the line */
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            right: -10px;
+            background-color: #fff;
+            border: 4px solid #ff1493;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -14px;
+        }
+
+        .content {
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.2);
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .content h3 {
+            font-family: 'Dancing Script', cursive;
+            color: #ffb6c1;
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+        }
+        
+        @media screen and (max-width: 600px) {
+            .timeline-container::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-item:nth-child(even) { left: 0%; }
+            .timeline-item::after { left: 21px; right: auto; }
+            .timeline-item:nth-child(even)::after { left: 21px; }
+            .content h3 { font-size: 1.8rem; }
+            .content p { font-size: 1.1rem; }
+        }
+
+        .btn-container {
+            text-align: center;
+            margin: 50px 0 100px 0;
+            z-index: 20;
+            position: relative;
+        }
+
+        .next-btn {
+            padding: 15px 50px;
+            border-radius: 30px;
+            border: none;
+            background: #ff1493;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff1493, inset 0 0 10px #ff69b4;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .next-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 0 30px #ff1493, 0 0 50px #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <div class="timeline-container">
+        <div class="timeline-item">
+            <div class="content">
+                <h3>The Beginning</h3>
+                <p>i fear to talk to but i do</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="content">
+                <h3>A New Step</h3>
+                <p>i start a frienfship withyou</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="content">
+                <h3>The Agreement</h3>
+                <p>hardest part cursed by love</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="content">
+                <h3>The Plot Twist</h3>
+                <p>you have several fanboys 😀</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="content">
+                <h3>The Connection</h3>
+                <p>you shared words to me</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="content">
+                <h3>Here We Are</h3>
+                <p>really i dont know</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <a href="transition.html" class="next-btn">more</a>
+    </div>
+
+    <script>
+        // Scroll animation logic
+        const items = document.querySelectorAll('.timeline-item');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        items.forEach(item => {
+            observer.observe(item);
+        });
+        
+        // Target specifically the first two items to show instantly so the page isn't totally empty on load
+        setTimeout(() => {
+            if(items.length > 0) items[0].classList.add('show');
+            setTimeout(() => {
+                if(items.length > 1) items[1].classList.add('show');
+            }, 600);
+        }, 500);
+    </script>
+    <script src="music.js"></script>
+</body>
+</html>

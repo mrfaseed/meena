@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Ending?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0; padding: 0;
+            background-color: #05000a;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        /* Ambient background */
+        .ambient {
+            position: fixed; top:0; left:0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, rgba(255,20,147,0.15) 0%, #05000a 60%);
+            z-index: 0;
+            animation: pulseGlow 5s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .stars {
+            position: fixed; top:0; left:0; width: 100vw; height: 100vh;
+            background-image: radial-gradient(1.5px 1.5px at 50% 50%, rgba(255,255,255,0.5) 100%, transparent);
+            background-size: 150px 150px;
+            opacity: 0.5;
+            z-index: 1;
+            animation: twinkle 4s infinite alternate;
+        }
+
+        /* Floating Hearts */
+        .heart-container {
+            position: fixed; top:0; left:0; width:100vw; height:100vh; z-index: 2; pointer-events: none; overflow:hidden;
+        }
+        .float-heart {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.4);
+            font-size: 20px;
+            animation: floatUp 15s linear infinite;
+            bottom: -50px;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(-15deg) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(35deg) scale(1.5); opacity: 0; }
+        }
+
+        /* Content */
+        .content-box {
+            z-index: 10;
+            text-align: center;
+            animation: fadeInContent 3s ease forwards;
+            opacity: 0;
+            max-width: 800px;
+            width: 90%;
+            padding: 60px 20px; /* Extra padding ensures it doesn't hug the very edge when scrolling */
+            margin: auto;
+        }
+
+        @keyframes fadeInContent { to { opacity: 1; } }
+
+        .stanza {
+            margin-bottom: 3vh;
+            font-size: clamp(1.2rem, 3.5vh, 1.8rem);
+            line-height: 1.8;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 0 10px rgba(255,20,147,0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: floatInText 2s forwards;
+        }
+        
+        .stanza:nth-child(1) { animation-delay: 1.5s; }
+        .stanza:nth-child(2) { animation-delay: 4.5s; }
+        .name-wrapper { opacity: 0; transform: translateY(20px); animation: floatInText 2s forwards; animation-delay: 7s; }
+        .small-wrapper { opacity: 0; transform: translateY(20px); animation: floatInText 2s forwards; animation-delay: 9s; }
+        .btn-wrapper { opacity: 0; transform: translateY(20px); animation: floatInText 2s forwards; animation-delay: 11.5s; margin-bottom: 20px; }
+
+        @keyframes floatInText { 
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .highlight {
+            color: #ffb6c1;
+            text-shadow: 0 0 15px rgba(255,105,180,0.6);
+        }
+
+        .name-glow {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3.5rem, 9vw, 6rem);
+            color: #fff;
+            text-shadow: 0 0 20px #ff1493, 0 0 40px #ff69b4, 0 0 60px #ff1493;
+            margin: 2vh 0 1vh 0;
+            animation: nameBreathe 3s infinite alternate ease-in-out;
+            letter-spacing: 2px;
+        }
+
+        @keyframes nameBreathe {
+            0% { transform: scale(1); text-shadow: 0 0 15px #ff1493, 0 0 30px #ff69b4; }
+            100% { transform: scale(1.03); text-shadow: 0 0 25px #ff1493, 0 0 50px #ff69b4, 0 0 80px #ff1493; }
+        }
+
+        .small-line {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: #ffb6c1;
+            margin-bottom: 5vh;
+            text-shadow: 0 0 10px rgba(255,105,180,0.5);
+        }
+
+        .end-btn {
+            padding: 12px 50px;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            background: rgba(255, 20, 147, 0.1);
+            color: rgba(255, 182, 193, 0.8);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            cursor: default;
+            transition: all 0.5s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .end-btn:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            color: white;
+            box-shadow: 0 0 20px rgba(255,105,180,0.6), inset 0 0 15px rgba(255,20,147,0.3);
+            background: rgba(255, 20, 147, 0.3);
+        }
+
+        @media screen and (max-width: 600px) {
+            .stanza { font-size: 1.4rem; margin-bottom: 30px; line-height: 1.6; }
+            .name-glow { font-size: 4.5rem; }
+            .small-line { font-size: 2rem; }
+        }
+
+        /* Beautiful Premium Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 0, 10, 0.85); /* Deep dark background */
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-box {
+            background: rgba(255, 255, 255, 0.04); /* Elegant glassmorphism */
+            border: 1px solid rgba(255, 182, 193, 0.25);
+            border-radius: 30px;
+            padding: 50px 40px 30px 40px;
+            max-width: 500px; width: 88%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(255, 105, 180, 0.1);
+            text-align: center;
+            transform: scale(0.9) translateY(40px);
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            max-height: 85vh; /* Fits on mobile */
+            display: flex; flex-direction: column;
+        }
+        .modal-overlay.active .modal-box { transform: scale(1) translateY(0); }
+        
+        .modal-scroll-area {
+            overflow-y: auto; padding-right: 5px; margin-bottom: 25px;
+        }
+        .modal-scroll-area::-webkit-scrollbar { width: 4px; }
+        .modal-scroll-area::-webkit-scrollbar-thumb { background: rgba(255,105,180,0.4); border-radius: 5px; }
+
+        .modal-icon {
+            font-size: 3rem; margin-top: -85px; margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+            animation: floatIcon 3s infinite alternate ease-in-out;
+        }
+        @keyframes floatIcon { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+
+        .modal-text {
+            color: #fff; margin-bottom: 22px;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+        }
+        .modal-text.primary {
+            font-size: 1.05rem; line-height: 1.8;
+            color: #ffb6c1; font-weight: 300;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+        .modal-text.secondary {
+            font-size: 0.95rem; line-height: 1.6;
+            color: rgba(255,255,255,0.75); font-weight: 300;
+        }
+        .modal-text.signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem; color: #ff1493; margin-top: 30px; margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
+            line-height: 1.2;
+        }
+
+        .modal-close-btn {
+            padding: 14px 45px; border-radius: 30px; border: 1px solid rgba(255,105,180,0.4);
+            background: rgba(255, 20, 147, 0.05); color: #ffb6c1;
+            font-family: 'Poppins', sans-serif; font-size: 0.95rem; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(255,20,147,0.1); 
+            transition: all 0.3s ease;
+            margin-top: auto; align-self: center;
+        }
+        .modal-close-btn:hover { 
+            background: #ff1493; color: white; border-color: transparent;
+            box-shadow: 0 0 25px #ff1493; transform: translateY(-4px); 
+        }
+
+        /* Essential Mobile Corrections */
+        @media screen and (max-width: 600px) {
+            .modal-box { 
+                width: 95%; max-height: 90vh;
+                padding: 35px 15px 25px 15px; 
+                border-radius: 25px; 
+            }
+            .modal-icon { 
+                font-size: 2.2rem; 
+                margin-top: -55px; 
+                margin-bottom: 10px; 
+            }
+            .modal-scroll-area { 
+                margin-bottom: 15px; padding-right: 3px; 
+            }
+            .modal-text.primary { 
+                font-size: 1.05rem; 
+                line-height: 1.6; 
+                padding: 0 5px;
+            }
+            .modal-text.secondary { 
+                font-size: 0.95rem; 
+                line-height: 1.5;
+                margin-bottom: 15px; 
+            }
+            .modal-text.signature { 
+                font-size: 2rem; 
+                margin-top: 20px; 
+            }
+            .modal-close-btn { 
+                padding: 14px 20px; 
+                font-size: 0.95rem; 
+                width: 85%; /* Make button a gorgeous wide touch target */
+                margin-top: 10px;
+                border-radius: 20px;
+            }
+        }
+
+        /* Reply Form Styles */
+        .reply-section {
+            display: none; /* Hidden initially */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            z-index: 20;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .reply-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: #ffb6c1;
+            text-shadow: 0 0 15px rgba(255,105,180,0.6);
+            margin-bottom: 20px;
+        }
+
+        .reply-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,20,147,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .reply-input, .reply-textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 105, 180, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .reply-textarea {
+            resize: none;
+            height: 120px;
+        }
+
+        .reply-input:focus, .reply-textarea:focus {
+            border-color: #ff1493;
+            box-shadow: 0 0 15px rgba(255,20,147,0.4);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .reply-input::placeholder, .reply-textarea::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .send-btn {
+            padding: 15px;
+            border-radius: 30px;
+            border: none;
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 15px rgba(255,20,147,0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,20,147,0.6);
+        }
+
+        .send-btn:active {
+            transform: translateY(1px);
+        }
+
+        .status-msg {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #ffb6c1;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient"></div>
+    <div class="stars"></div>
+    
+    <div class="heart-container" id="hearts"></div>
+    
+    <div class="content-box" id="main-content">
+        <div class="stanza">
+          This is my last message for you my girl <br>
+            But here we are.<br>
+            <span class="highlight">Still talking.</span><br>
+            <span class="highlight">Still laughing.</span><br>
+            <span class="highlight">Still staying.</span>
+        </div>
+        
+        <div class="stanza">
+            Maybe this was not planned.<br>
+            Maybe this was written.
+        </div>
+
+        <div class="name-wrapper">
+            <div class="name-glow">meena</div>
+        </div>
+        
+        <div class="small-wrapper">
+            <div class="small-line">Thank you for staying.</div>
+        </div>
+        
+        <div class="btn-wrapper">
+            <button class="end-btn" onclick="openModal()">END</button>
+        </div>
+    </div>
+
+    <!-- Reply Section -->
+    <div class="reply-section" id="reply-section">
+        <div class="reply-title">Write me back?</div>
+        <!-- Standard FormSubmit native post -->
+        <form class="reply-form" id="contact-form" action="https://formsubmit.co/naaajisoomee@gmail.com" method="POST">
+            <!-- Ensure it looks like a clean email -->
+            <input type="hidden" name="_subject" value="New message from Meena! 💖">
+            <!-- Disables CAPTCHA for a smoother experience -->
+            <input type="hidden" name="_captcha" value="false">
+            <!-- The form will use FormSubmit's default Thank You page for clear visual feedback -->
+            
+            <input type="text" name="name" class="reply-input" placeholder="Your name (optional)" autocomplete="off">
+            <textarea name="message" class="reply-textarea" placeholder="Say something before you go..." required></textarea>
+            <button type="submit" class="send-btn" id="send-btn">Send Message</button>
+        </form>
+    </div>
+
+    <!-- Beautiful Final Dialog -->
+    <div class="modal-overlay" id="final-modal">
+        <div class="modal-box">
+            <div class="modal-icon">🌸</div>
+            <div class="modal-scroll-area">
+                <p class="modal-text primary">"Even if you visit this site in the year 2040, maybe I will not be with you. But my memories with you, meena... and even if I lose you, if I can't talk with you for all time, no more in my life... I cannot forget you. You are such a blessing."</p>
+                <p class="modal-text secondary">"I will not be there tomorrow for you, so you have more time to study. Study well! 📚"</p>
+                <p class="modal-text secondary">"Haha, I am writing this emotionally while you are fighting with me, angry..."</p>
+                <p class="modal-text secondary" style="font-style: italic;">"You remember the fight?"</p>
+                <p class="modal-text signature">always with care,<br>your ~unknown person</p>
+            </div>
+            <button class="modal-close-btn" onclick="closeModal()">Close forever</button>
+        </div>
+    </div>
+
+    <script>
+        // Create slow floating hearts in the background
+        const container = document.getElementById('hearts');
+        for (let i = 0; i < 25; i++) {
+            let heart = document.createElement('div');
+            heart.className = 'float-heart';
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 95 + 'vw';
+            heart.style.animationDelay = Math.random() * 20 + 's';
+            heart.style.animationDuration = 18 + Math.random() * 25 + 's';
+            heart.style.fontSize = 15 + Math.random() * 25 + 'px';
+            heart.style.opacity = 0.2 + Math.random() * 0.4;
+            // Some drift
+            heart.style.transform = `translateX(${(Math.random() - 0.5) * 50}px)`;
+            container.appendChild(heart);
+        }
+
+        // Modal toggling functions
+        function openModal() {
+            document.getElementById('final-modal').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('final-modal').classList.remove('active');
+            
+            // Fade out the main content
+            const mainContent = document.getElementById('main-content');
+            mainContent.style.transition = 'opacity 1s ease';
+            mainContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                mainContent.style.display = 'none';
+                
+                // Show reply section
+                const replySection = document.getElementById('reply-section');
+                replySection.style.display = 'flex';
+                // Small delay to ensure display: flex is applied before opacity transition
+                setTimeout(() => {
+                    replySection.style.opacity = '1';
+                }, 100);
+            }, 1000);
+        }
+
+        // Visual feedback when clicking send
+        document.getElementById('contact-form').addEventListener('submit', function() {
+            const btn = document.getElementById('send-btn');
+            btn.textContent = 'Sending...';
+            btn.style.opacity = '0.7';
+        });
+    </script>
+    <script src="music.js"></script>
+</body>
+</html>

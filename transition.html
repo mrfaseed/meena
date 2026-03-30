@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You kept asking...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            background-color: #0b0213;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .background-glow {
+            position: absolute; top:0; left:0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(26, 8, 35, 0.8) 0%, #0b0213 100%);
+            z-index: 0;
+        }
+
+        .text-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cinematic-text {
+            font-size: 2.2rem;
+            color: #ffb6c1;
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.6), 0 0 20px rgba(255, 105, 180, 0.4);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        }
+
+        .cinematic-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cinematic-text.fade-out {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+
+        @media screen and (max-width: 600px) {
+            .cinematic-text { font-size: 1.6rem; padding: 0 20px; }
+        }
+
+        .button-group {
+            position: absolute;
+            top: 60px; /* Appear below the question text */
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
+            z-index: 20;
+        }
+
+        .button-group.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn {
+            padding: 12px 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 105, 180, 0.6);
+            background: rgba(255, 20, 147, 0.1);
+            color: #ffb6c1;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.2);
+        }
+
+        .btn:hover {
+            background: rgba(255, 20, 147, 0.4);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.6), inset 0 0 10px rgba(255, 105, 180, 0.4);
+            border-color: rgba(255, 255, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        .watch-btn {
+            padding: 15px 50px;
+            border: none;
+            background: #ff1493;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px #ff1493, inset 0 0 10px #ff69b4;
+            text-decoration: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 1s ease;
+            margin-top: 50px;
+            border-radius: 30px;
+            display: inline-block;
+            position: absolute;
+            z-index: 30;
+        }
+
+        .watch-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(20px);
+        }
+
+        .watch-btn:hover {
+            transform: translateY(15px) scale(1.05);
+            box-shadow: 0 0 30px #ff1493, 0 0 50px #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <div class="text-container" id="text-container">
+        <!-- Texts dynamically injected -->
+    </div>
+    
+    <div class="button-group" id="choice-buttons">
+        <button class="btn" onclick="makeChoice('yes')">Yes</button>
+        <button class="btn" onclick="makeChoice('no')">No</button>
+    </div>
+
+    <a href="destiny.html" class="watch-btn" id="watch-btn">WATCH</a>
+
+    <script>
+        const sequence = [
+            "I made this website for you.",
+            
+            
+            "I understood.",
+            "yeah ... read it carefully",
+            "I have a fear that ",
+            "if i give you this site you will left me",
+            "But",
+            "You really wanted to see this.",
+            "Do you understand how much I love you by this site ?"
+        ];
+
+        const container = document.getElementById("text-container");
+        const choiceButtons = document.getElementById("choice-buttons");
+        const watchBtn = document.getElementById("watch-btn");
+
+        let currentIndex = 0;
+        let activeElement = null;
+
+        function showNarrative() {
+            if (currentIndex < sequence.length) {
+                // If there's an active text, fade it out first
+                if (activeElement) {
+                    activeElement.classList.remove('visible');
+                    activeElement.classList.add('fade-out');
+                    setTimeout(() => {
+                        activeElement.remove();
+                        spawnNextText();
+                    }, 1000); // Wait for fade out
+                } else {
+                    spawnNextText();
+                }
+            }
+        }
+
+        function spawnNextText() {
+            const isLastQuestion = (currentIndex === sequence.length - 1);
+            
+            const el = document.createElement('div');
+            el.className = 'cinematic-text';
+            el.innerText = sequence[currentIndex];
+            container.appendChild(el);
+            
+            // Force reflow
+            void el.offsetWidth;
+            el.classList.add('visible');
+            activeElement = el;
+
+            // Reading duration. Make "again" faster to feel like a barrage.
+            let readTime = 2500;
+            if (sequence[currentIndex].toLowerCase().includes("again")) {
+                readTime = 1200; // Faster for comedic/dramatic effect
+            }
+            if (currentIndex === 0 || currentIndex >= sequence.length - 3) {
+                readTime = 3000; // Slower for narrative parts
+            }
+
+            if (isLastQuestion) {
+                // Keep the question on screen, show buttons
+                setTimeout(() => {
+                    choiceButtons.style.top = (activeElement.offsetHeight + 30) + "px";
+                    choiceButtons.classList.add('visible');
+                }, 1500);
+            } else {
+                currentIndex++;
+                setTimeout(showNarrative, readTime);
+            }
+        }
+
+        // Start animation shortly after load
+        setTimeout(showNarrative, 1000);
+
+        function makeChoice(answer) {
+            // Hide buttons
+            choiceButtons.classList.remove('visible');
+            choiceButtons.style.pointerEvents = 'none';
+
+            // Fade out the question
+            activeElement.classList.remove('visible');
+            activeElement.classList.add('fade-out');
+
+            setTimeout(() => {
+                activeElement.remove();
+
+                if (answer === 'yes') {
+                    playResponseSequence([
+                        "Good. Then watch this."
+                    ]);
+                } else {
+                    playResponseSequence([
+                        "It's okay.",
+                        "This is the last time I'm showing it."
+                    ]);
+                }
+            }, 1000);
+        }
+
+        function playResponseSequence(msgs) {
+            let msgIndex = 0;
+
+            function nextRes() {
+                if (msgIndex < msgs.length) {
+                    if (activeElement && activeElement.parentNode) {
+                        activeElement.classList.remove('visible');
+                        activeElement.classList.add('fade-out');
+                        setTimeout(() => {
+                            activeElement.remove();
+                            spawnRes();
+                        }, 1000);
+                    } else {
+                        spawnRes();
+                    }
+                } else {
+                    // Sequence done. Fade out whatever is left and show WATCH button.
+                    if (activeElement && activeElement.parentNode) {
+                        activeElement.classList.remove('visible');
+                        activeElement.classList.add('fade-out');
+                    }
+                    setTimeout(() => {
+                        watchBtn.style.top = "10px"; // relative to text container, places it centrally
+                        watchBtn.classList.add('visible');
+                    }, 1000);
+                }
+            }
+
+            function spawnRes() {
+                const el = document.createElement('div');
+                el.className = 'cinematic-text';
+                el.innerText = msgs[msgIndex];
+                container.appendChild(el);
+                
+                void el.offsetWidth;
+                el.classList.add('visible');
+                activeElement = el;
+
+                msgIndex++;
+                setTimeout(nextRes, 3000);
+            }
+
+            nextRes();
+        }
+    </script>
+    <script src="music.js"></script>
+</body>
+</html>
